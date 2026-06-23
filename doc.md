@@ -1,0 +1,1 @@
+Trình bày ý tưởng --> cho AI chi tiết hóa ý tưởng --> Đọc lại bản chi tiết ý tưởng đó --> chỉnh sửa (nếu cần) --> Lập kế hoạch nghiệp vụ --> Lập kế hoạch kỹ thuật --> Thực hiện (AI)--> Test-->Feedback --> quay lại bước 1

@@ -1,0 +1,50 @@
+{
+  "siteConfig": {
+    "title": "VO KHOI",
+    "subtitle": "Visual Storyteller & Cinematic Video Editor",
+    "description": "I create cinematic stories inspired by coffee, travel and everyday moments.",
+    "social": {
+      "instagram": "https://instagram.com/vokhoi",
+      "facebook": "https://facebook.com/vokhoi",
+      "zalo": "https://zalo.me/vokhoi"
+    }
+  },
+  "hero": {
+    "showreelVideoTiktokUrl": "",
+    "coverImage": "/images/about/portrait.jpg"
+  },
+  "about": {
+    "bio": "Tôi là Vo Khoi — a visual storyteller based in Vietnam. I believe every brand has a story worth telling through cinematic visuals.",
+    "tools": ["DaVinci Resolve", "CapCut", "Premiere Pro"],
+    "portraitImage": "/images/about/portrait.jpg"
+  },
+  "projects": [
+    {
+      "id": "1",
+      "title": "MV 1999",
+      "category": "Music Video",
+      "description": "A cinematic music video capturing youth.",
+      "thumbnailUrl": "/images/projects/mv-1999.jpg",
+      "tiktokUrl": "",
+      "featured": true
+    },
+    {
+      "id": "2",
+      "title": "VT Solo Trip",
+      "category": "Travel",
+      "description": "A quiet escape to the coastal city.",
+      "thumbnailUrl": "/images/projects/vt-solo-trip.jpg",
+      "tiktokUrl": "",
+      "featured": true
+    },
+    {
+      "id": "3",
+      "title": "Đừng Làm Chi Nửa Vời",
+      "category": "Commercial",
+      "description": "Brand storytelling for a local business.",
+      "thumbnailUrl": "/images/projects/dung-lam-chi.jpg",
+      "tiktokUrl": "",
+      "featured": true
+    }
+  ]
+}

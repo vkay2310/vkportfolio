@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+/* 
+ * BOLD TYPOGRAPHY DESIGN SYSTEM
+ * Extreme contrast, typography-centered, #FF3D00 accent.
+ */
+
+@theme {
+  --color-background: #0A0A0A;
+  --color-foreground: #FAFAFA;
+  --color-muted: #1A1A1A;
+  --color-muted-foreground: #737373;
+  --color-accent: #FF3D00;
+  --color-accent-foreground: #0A0A0A;
+  --color-border: #262626;
+  --color-card: #0F0F0F;
+
+  --font-sans: "Inter Tight", "Inter", system-ui, sans-serif;
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+  
+  --radius-none: 0px;
+}
+
+@layer base {
+  :root {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    @apply font-sans antialiased selection:bg-accent selection:text-accent-foreground;
+  }
+  
+  /* Reset some default behaviors */
+  html {
+    scroll-behavior: auto; /* Lenis handles smooth scroll */
+  }
+
+  body {
+    @apply m-0 p-0 overflow-x-hidden relative min-h-screen;
+  }
+}
+
+/* Base Utility Classes per Design System */
+@layer utilities {
+  .text-shadow-sm {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  }
+}
