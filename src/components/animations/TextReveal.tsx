@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ReactNode } from 'react';
 import { cn } from '../../lib/utils';
+import { EASE_CINEMATIC } from '../../lib/motion';
 
 interface Props {
   children: ReactNode;
@@ -16,7 +17,7 @@ export function TextReveal({ children, delay = 0, className = "" }: Props) {
         initial={{ y: "100%" }}
         whileInView={{ y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
-        transition={{ duration: 0.7, delay, ease: [0.25, 0, 0, 1] }}
+        transition={{ duration: 0.7, delay, ease: EASE_CINEMATIC }}
       >
         {children}
       </motion.span>

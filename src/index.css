@@ -1,25 +1,39 @@
 @import "tailwindcss";
 
-/* 
- * BOLD TYPOGRAPHY DESIGN SYSTEM
- * Extreme contrast, typography-centered, #FF3D00 accent.
+/*
+ * APPLE × CINEMATIC × SPACE — Design System
  */
 
 @theme {
-  --color-background: #0A0A0A;
-  --color-foreground: #FAFAFA;
-  --color-muted: #1A1A1A;
-  --color-muted-foreground: #737373;
+  --color-background: #04050A;
+  --color-foreground: #F0F0F5;
+  --color-muted: #0D0E14;
+  --color-muted-foreground: #5A5B6E;
   --color-accent: #FF3D00;
-  --color-accent-foreground: #0A0A0A;
-  --color-border: #262626;
-  --color-card: #0F0F0F;
+  --color-accent-foreground: #FFFFFF;
+  --color-border: #1A1B26;
+  --color-card: #080910;
+
+  --color-space-deep: #04050A;
+  --color-space-mid: #070810;
+  --color-space-near: #0C0D18;
+  --color-space-surface: #12131F;
 
   --font-sans: "Inter Tight", "Inter", system-ui, sans-serif;
   --font-display: "Playfair Display", Georgia, serif;
   --font-mono: "JetBrains Mono", "Fira Code", monospace;
-  
+
   --radius-none: 0px;
+}
+
+/* ─── MOTION LANGUAGE (Phase 5) — dùng chung cho CSS & framer-motion ───── */
+:root {
+  --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-snap: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 0.25s;
+  --dur-base: 0.6s;
+  --dur-slow: 0.85s;
+  --dur-cinematic: 1.2s;
 }
 
 @layer base {
@@ -28,10 +42,9 @@
     color: var(--color-foreground);
     @apply font-sans antialiased selection:bg-accent selection:text-accent-foreground;
   }
-  
-  /* Reset some default behaviors */
+
   html {
-    scroll-behavior: auto; /* Lenis handles smooth scroll */
+    scroll-behavior: auto;
   }
 
   body {
@@ -39,9 +52,375 @@
   }
 }
 
-/* Base Utility Classes per Design System */
-@layer utilities {
-  .text-shadow-sm {
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+/* ─── ENVIRONMENT ───────────────────────────────────────── */
+
+.env-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  pointer-events: none;
+  overflow: hidden;
+  animation: env-reveal var(--dur-cinematic) var(--ease-cinematic) both;
+}
+
+@keyframes env-reveal {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.env-stars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.env-sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(80, 120, 255, 0.09) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(255, 61, 0, 0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 80% at 20% 50%, rgba(40, 60, 140, 0.06) 0%, transparent 70%),
+    linear-gradient(180deg, #04050A 0%, #060710 40%, #050609 100%);
+}
+
+.env-fog {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 120% 30% at 50% 30%, rgba(80, 100, 200, 0.04) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 20% at 30% 70%, rgba(60, 80, 180, 0.03) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 25% at 70% 85%, rgba(255, 61, 0, 0.03) 0%, transparent 50%);
+  animation: fog-drift 25s ease-in-out infinite alternate;
+}
+
+@keyframes fog-drift {
+  0% {
+    transform: translateX(-2%) translateY(-1%) scale(1.01);
+  }
+
+  33% {
+    transform: translateX(1%) translateY(0.5%) scale(1.0);
+  }
+
+  66% {
+    transform: translateX(-1%) translateY(1%) scale(1.02);
+  }
+
+  100% {
+    transform: translateX(2%) translateY(-0.5%) scale(1.0);
+  }
+}
+
+.env-dust {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.dust-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(200, 210, 255, 0.5);
+  animation: dust-float linear infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes dust-float {
+  0% {
+    transform: translateY(105vh) translateX(0px) scale(0);
+    opacity: 0;
+  }
+
+  5% {
+    opacity: 1;
+  }
+
+  95% {
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: translateY(-5vh) translateX(var(--drift-x, 30px)) scale(0.5);
+    opacity: 0;
+  }
+}
+
+.env-light-beams {
+  position: absolute;
+  inset: 0;
+  background:
+    conic-gradient(from 270deg at 30% -5%, transparent 85deg, rgba(100, 140, 255, 0.04) 90deg, transparent 95deg),
+    conic-gradient(from 270deg at 70% -5%, transparent 87deg, rgba(255, 61, 0, 0.03) 90deg, transparent 93deg),
+    conic-gradient(from 270deg at 50% -10%, transparent 88deg, rgba(150, 180, 255, 0.03) 90deg, transparent 92deg);
+  animation: beam-sway 30s ease-in-out infinite alternate;
+}
+
+@keyframes beam-sway {
+  0% {
+    opacity: 0.6;
+    transform: skewX(-1deg);
+  }
+
+  50% {
+    opacity: 1.0;
+    transform: skewX(0deg);
+  }
+
+  100% {
+    opacity: 0.7;
+    transform: skewX(1deg);
+  }
+}
+
+.env-noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  animation: noise-shift 0.12s steps(1) infinite;
+}
+
+@keyframes noise-shift {
+  0% {
+    background-position: 0px 0px;
+  }
+
+  11% {
+    background-position: -50px 20px;
+  }
+
+  22% {
+    background-position: 30px -40px;
+  }
+
+  33% {
+    background-position: -10px 50px;
+  }
+
+  44% {
+    background-position: 60px 10px;
+  }
+
+  55% {
+    background-position: -30px -20px;
+  }
+
+  66% {
+    background-position: 10px 60px;
+  }
+
+  77% {
+    background-position: -60px -10px;
+  }
+
+  88% {
+    background-position: 40px -50px;
+  }
+
+  100% {
+    background-position: 0px 0px;
+  }
+}
+
+.env-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 85% 85% at 50% 50%, transparent 35%, rgba(2, 3, 8, 0.75) 100%);
+  pointer-events: none;
+}
+
+.env-mouse-light {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle 700px at var(--mouse-x, 50%) var(--mouse-y, 30%),
+      rgba(255, 61, 0, 0.055) 0%,
+      transparent 70%);
+  pointer-events: none;
+  transition: none;
+}
+
+/* ─── DEPTH SYSTEM ──────────────────────────────────────── */
+
+.depth-1 {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+.depth-2 {
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.5),
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.depth-3 {
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 0 80px rgba(80, 120, 255, 0.04);
+}
+
+.glow-accent {
+  box-shadow:
+    0 0 20px rgba(255, 61, 0, 0.3),
+    0 0 60px rgba(255, 61, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.spotlight-card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.spotlight-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle 280px at var(--card-mouse-x, 50%) var(--card-mouse-y, 50%),
+      rgba(255, 255, 255, 0.055) 0%,
+      transparent 70%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.spotlight-card:hover::before {
+  opacity: 1;
+}
+
+.light-wrap {
+  position: relative;
+}
+
+.light-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ─── UTILITIES ─────────────────────────────────────────── */
+
+.glass {
+  background: rgba(8, 9, 16, 0.72);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-light {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.text-shadow-depth {
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.9),
+    0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+/* ─── DEPTH — BLUR THEO KHOẢNG CÁCH (Phase 2) ───────────────
+   Dùng cho bất kỳ element trang trí / nền nào cần đọc là "ở xa" hay "ở gần"
+   so với layer nội dung chính. Xa = mờ + mờ dần, gần = nét hoàn toàn. */
+
+.depth-blur-far {
+  filter: blur(6px);
+  opacity: 0.65;
+}
+
+.depth-blur-mid {
+  filter: blur(2.5px);
+  opacity: 0.85;
+}
+
+.depth-blur-near {
+  filter: blur(0px);
+  opacity: 1;
+}
+
+.depth-4 {
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.65),
+    0 30px 90px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 120px rgba(80, 120, 255, 0.06);
+}
+
+/* ─── MOTION — AMBIENT (Phase 5) ─────────────────────────────
+   Chuyển động nhỏ, liên tục, không cần tương tác — để site "luôn sống". */
+
+@keyframes ambient-float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.ambient-float {
+  animation: ambient-float 6s var(--ease-cinematic) infinite;
+}
+
+@keyframes ambient-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.ambient-pulse {
+  animation: ambient-pulse 4s ease-in-out infinite;
+}
+
+/* Hover language dùng chung — nâng nhẹ + easing cinematic, mọi nơi giống nhau */
+.hover-rise {
+  transition: transform var(--dur-base) var(--ease-cinematic), box-shadow var(--dur-base) var(--ease-cinematic);
+}
+
+.hover-rise:hover {
+  transform: translateY(-4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .ambient-float,
+  .ambient-pulse,
+  .env-canvas {
+    animation: none !important;
   }
 }
