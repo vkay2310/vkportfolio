@@ -7,9 +7,14 @@ interface Props {
   title: string;
   subtitle?: ReactNode;
   light?: boolean;
+  /** Position in the page's scroll sequence (1-indexed). Sections on this
+   * one-page site genuinely are an ordered sequence — Hero → Work → More
+   * Works → About → Contact — so a number here encodes real information
+   * about where the visitor is, not decoration. */
+  index?: number;
 }
 
-export function SectionHeading({ title, subtitle, light = false }: Props) {
+export function SectionHeading({ title, subtitle, light = false, index }: Props) {
   return (
     <div className="mb-16 md:mb-24 flex flex-col items-start w-full relative z-10">
       <motion.div
@@ -34,6 +39,11 @@ export function SectionHeading({ title, subtitle, light = false }: Props) {
         )}>
           {title}
         </span>
+        {index !== undefined && (
+          <span className="font-mono text-xs text-muted-foreground/40 tracking-widest">
+            {String(index).padStart(2, '0')}
+          </span>
+        )}
       </motion.div>
 
       {subtitle && (

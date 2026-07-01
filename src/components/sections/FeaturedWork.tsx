@@ -12,7 +12,7 @@ export function FeaturedWork({ onPlay }: Props) {
   return (
     <section id="work" className="py-24 md:py-32">
       <div className="container mx-auto px-6 md:px-12">
-        <SectionHeading title="Featured Work" subtitle="Selected Projects" />
+        <SectionHeading title="Featured Work" subtitle="Selected Projects" index={1} />
 
         <div className="flex flex-col">
           {featuredProjects.map((project, idx) => (

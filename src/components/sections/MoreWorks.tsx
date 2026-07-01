@@ -1,10 +1,15 @@
 import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { SectionHeading } from '../ui/SectionHeading';
+import { cn } from '../../lib/utils';
 import data from '../../data/data.json';
 
-export function MoreWorks() {
-  const moreProjects = data.projects.filter(p => !p.featured);
+interface Props {
+  onPlay: (url: string) => void;
+}
+
+export function MoreWorks({ onPlay }: Props) {
+  const moreProjects = data.projects.filter((p) => !p.featured);
   if (moreProjects.length === 0) return null;
 
   return (
@@ -21,11 +26,19 @@ export function MoreWorks() {
       />
 
       <div className="container mx-auto px-6 md:px-12 relative z-10">
-        <SectionHeading title="More Works" />
+        <SectionHeading title="More Works" index={2} />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Bento grid — first card stands taller/wider to break the
+            uniform-square rhythm and give the section a focal point. */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 grid-flow-dense gap-4">
           {moreProjects.map((project, i) => (
-            <MoreWorkCard key={project.id} project={project} index={i} />
+            <MoreWorkCard
+              key={project.id}
+              project={project}
+              index={i}
+              large={i === 0}
+              onPlay={() => onPlay(project.tiktokUrl)}
+            />
           ))}
         </div>
       </div>
@@ -33,8 +46,20 @@ export function MoreWorks() {
   );
 }
 
-function MoreWorkCard({ project, index }: { project: typeof data.projects[0]; index: number }) {
+function MoreWorkCard({
+  project,
+  index,
+  large,
+  onPlay,
+}: {
+  project: (typeof data.projects)[0];
+  index: number;
+  large?: boolean;
+  onPlay: () => void;
+}) {
   const ref = useRef<HTMLDivElement>(null);
+  const hasVideo = Boolean(project.tiktokUrl);
+  const hasMeta = Boolean(project.duration || project.client);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!ref.current) return;
@@ -49,19 +74,32 @@ function MoreWorkCard({ project, index }: { project: typeof data.projects[0]; in
     <motion.div
       ref={ref}
       onMouseMove={handleMouseMove}
+      onClick={() => hasVideo && onPlay()}
+      role="button"
+      tabIndex={hasVideo ? 0 : -1}
+      aria-disabled={!hasVideo}
+      onKeyDown={(e) => {
+        if (hasVideo && (e.key === 'Enter' || e.key === ' ')) onPlay();
+      }}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.7, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-      className="relative group cursor-pointer aspect-square overflow-hidden spotlight-card depth-2 light-wrap"
+      className={cn(
+        'relative group overflow-hidden spotlight-card depth-2 light-wrap',
+        large ? 'col-span-2 row-span-2 aspect-square sm:aspect-[4/3] lg:aspect-square' : 'aspect-square',
+        hasVideo ? 'cursor-pointer' : 'cursor-default'
+      )}
       style={{ background: 'var(--color-space-surface)' }}
     >
       <motion.img
         src={project.thumbnailUrl}
         alt={project.title}
+        loading="lazy"
+        decoding="async"
         className="w-full h-full object-cover"
-        style={{ opacity: 0.75 }}
-        whileHover={{ scale: 1.06, opacity: 0.95 }}
+        style={{ opacity: hasVideo ? 0.75 : 0.45 }}
+        whileHover={{ scale: 1.06, opacity: hasVideo ? 0.95 : 0.5 }}
         transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
       />
 
@@ -85,11 +123,26 @@ function MoreWorkCard({ project, index }: { project: typeof data.projects[0]; in
           {project.category}
         </motion.p>
         <h4
-          className="font-display text-xl tracking-tight text-white"
+          className={cn('font-display tracking-tight text-white', large ? 'text-2xl md:text-3xl' : 'text-xl')}
           style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}
         >
           {project.title}
         </h4>
+
+        {!hasVideo && (
+          <span className="mt-1.5 font-mono text-[10px] tracking-widest uppercase text-muted-foreground">
+            Coming Soon
+          </span>
+        )}
+
+        {/* Extra detail revealed on hover — duration / client, when provided */}
+        {hasMeta && (
+          <div className="max-h-0 group-hover:max-h-8 overflow-hidden transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]">
+            <p className="mt-1.5 font-mono text-[11px] text-foreground/60 tracking-wide">
+              {[project.duration, project.client].filter(Boolean).join(' · ')}
+            </p>
+          </div>
+        )}
 
         {/* Line appears on hover */}
         <div className="mt-3 h-[1px] bg-gradient-to-r from-accent/50 to-transparent w-0 group-hover:w-full transition-all duration-600" />

@@ -85,7 +85,7 @@ export function Hero({ onPlay }: Props) {
           >
             <span className="w-8 h-[1px] bg-accent block" />
             <span className="font-mono text-xs tracking-[0.3em] uppercase text-muted-foreground">
-              Visual Storyteller
+              {data.siteConfig.eyebrow ?? data.siteConfig.subtitle}
             </span>
           </motion.div>
 
@@ -94,9 +94,9 @@ export function Hero({ onPlay }: Props) {
             className="text-6xl md:text-8xl lg:text-9xl font-display font-medium tracking-tighter leading-[0.9]"
             style={{ textShadow: '0 2px 4px rgba(0,0,0,0.9), 0 8px 32px rgba(0,0,0,0.5)' }}
           >
-            <TextReveal>Vo</TextReveal>
+            <TextReveal mode="immediate" delay={0.15}>Vo</TextReveal>
             <br />
-            <TextReveal delay={0.1}>
+            <TextReveal mode="immediate" delay={0.25}>
               Khoi<span className="text-accent" style={{ textShadow: '0 0 30px rgba(255,61,0,0.6)' }}>.</span>
             </TextReveal>
           </h1>
@@ -150,6 +150,7 @@ export function Hero({ onPlay }: Props) {
             <img
               src={data.hero.coverImage}
               alt="Hero Cover Cinematic"
+              fetchPriority="high"
               className="w-full h-full object-cover"
               style={{ opacity: 0.85 }}
             />
@@ -168,14 +169,29 @@ export function Hero({ onPlay }: Props) {
             className="absolute inset-0 flex items-center justify-center cursor-pointer z-10"
             onClick={onPlay}
           >
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="w-20 h-20 rounded-full flex items-center justify-center glass depth-2"
-              style={{ border: '1px solid rgba(255,255,255,0.15)' }}
-            >
-              <div className="w-0 h-0 border-y-[10px] border-y-transparent border-l-[18px] border-l-white ml-1.5" />
-            </motion.div>
+            <div className="relative flex items-center justify-center">
+              {/* Ambient pulse rings — invite the click without being asked */}
+              <motion.span
+                className="absolute rounded-full border border-white/25"
+                style={{ width: 80, height: 80 }}
+                animate={{ scale: [1, 1.6], opacity: [0.5, 0] }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: 'easeOut' }}
+              />
+              <motion.span
+                className="absolute rounded-full border border-accent/40"
+                style={{ width: 80, height: 80 }}
+                animate={{ scale: [1, 1.6], opacity: [0.6, 0] }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: 'easeOut', delay: 1.1 }}
+              />
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-20 h-20 rounded-full flex items-center justify-center glass depth-2"
+                style={{ border: '1px solid rgba(255,255,255,0.15)' }}
+              >
+                <div className="w-0 h-0 border-y-[10px] border-y-transparent border-l-[18px] border-l-white ml-1.5" />
+              </motion.div>
+            </div>
           </div>
         </motion.div>
       </div>

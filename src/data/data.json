@@ -1,8 +1,12 @@
 {
   "siteConfig": {
     "title": "VO KHOI",
+    "eyebrow": "Visual Storyteller",
     "subtitle": "Visual Storyteller & Cinematic Video Editor",
     "description": "I create cinematic stories inspired by coffee, travel and everyday moments.",
+    "email": "",
+    "availability": "Currently available for projects",
+    "avatarImage": "",
     "social": {
       "instagram": "https://instagram.com/vokhoi",
       "facebook": "https://facebook.com/vokhoi",
@@ -16,9 +20,18 @@
   "about": {
     "bio": "I am Vo Khoi — a visual storyteller based in Vietnam. I believe every brand has a story worth telling through cinematic visuals.",
     "tools": [
-      "DaVinci Resolve",
-      "CapCut",
-      "Premiere Pro"
+      {
+        "name": "DaVinci Resolve",
+        "role": ""
+      },
+      {
+        "name": "CapCut",
+        "role": ""
+      },
+      {
+        "name": "Premiere Pro",
+        "role": ""
+      }
     ],
     "portraitImage": "/img/img1.jpg"
   },
@@ -30,7 +43,9 @@
       "description": "A cinematic music video capturing youth.",
       "thumbnailUrl": "/img/img2.jpg",
       "tiktokUrl": "https://www.tiktok.com/@snake.i.cafe.1.mn/video/7644915705900485895?is_from_webapp=1&sender_device=pc&web_id=7636075552265242132",
-      "featured": true
+      "featured": true,
+      "duration": "",
+      "client": ""
     },
     {
       "id": "2",
@@ -39,7 +54,9 @@
       "description": "A quiet escape to the coastal city.",
       "thumbnailUrl": "/images/projects/vt-solo-trip.jpg",
       "tiktokUrl": "",
-      "featured": true
+      "featured": true,
+      "duration": "",
+      "client": ""
     },
     {
       "id": "3",
@@ -48,7 +65,9 @@
       "description": "Brand storytelling for a local business.",
       "thumbnailUrl": "/images/projects/dung-lam-chi.jpg",
       "tiktokUrl": "",
-      "featured": true
+      "featured": true,
+      "duration": "",
+      "client": ""
     }
   ]
 }

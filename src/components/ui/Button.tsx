@@ -1,6 +1,7 @@
 import { ButtonHTMLAttributes, forwardRef } from 'react';
 import { motion } from 'framer-motion';
-import { cn } from '../../lib/utils';
+import { cn, mergeRefs } from '../../lib/utils';
+import { useMagnetic } from '../../hooks/useMagnetic';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'outline' | 'ghost';
@@ -8,7 +9,16 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = 'primary', size = 'md', children, ...props }, ref) => {
+  ({ className, variant = 'primary', size = 'md', children, onMouseMove, onMouseLeave, onMouseDown, onMouseUp, ...props }, ref) => {
+    // Magnetic pull — a small signature detail that separates a hand-built
+    // cinematic site from a templated one. Skipped for `ghost` (plain text
+    // links), where the effect would read as a glitch rather than a touch.
+    //
+    // The hook owns `transform` directly on the DOM node (translate + press
+    // scale composed together), so framer-motion's `whileTap` is skipped
+    // for magnetic buttons — only one system should ever write `transform`.
+    const magnetic = useMagnetic<HTMLButtonElement>(0.3);
+    const isMagnetic = variant !== 'ghost';
 
     const variants = {
       primary: cn(
@@ -43,9 +53,26 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <motion.button
-        ref={ref}
-        whileTap={{ scale: 0.96, y: 1 }}
-        transition={{ duration: 0.08, ease: 'easeOut' }}
+        ref={isMagnetic ? mergeRefs(ref, magnetic.ref) : ref}
+        onMouseMove={(e) => {
+          if (isMagnetic) magnetic.onMouseMove(e);
+          onMouseMove?.(e);
+        }}
+        onMouseLeave={(e) => {
+          if (isMagnetic) magnetic.onMouseLeave();
+          onMouseLeave?.(e);
+        }}
+        onMouseDown={(e) => {
+          if (isMagnetic) magnetic.onMouseDown();
+          onMouseDown?.(e);
+        }}
+        onMouseUp={(e) => {
+          if (isMagnetic) magnetic.onMouseUp();
+          onMouseUp?.(e);
+        }}
+        whileTap={isMagnetic ? undefined : { scale: 0.96, y: 1 }}
+        transition={isMagnetic ? undefined : { duration: 0.08, ease: 'easeOut' }}
+        style={isMagnetic ? { transition: 'transform 0.25s cubic-bezier(0.16,1,0.3,1)' } : undefined}
         className={cn(
           "font-sans uppercase tracking-[0.12em] font-semibold",
           "flex items-center justify-center cursor-pointer",

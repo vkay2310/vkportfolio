@@ -7,6 +7,7 @@ import { MoreWorks } from '../components/sections/MoreWorks';
 import { About } from '../components/sections/About';
 import { Contact } from '../components/sections/Contact';
 import { TikTokLightbox } from '../components/ui/TikTokLightbox';
+import { SectionDivider } from '../components/animations/SectionDivider';
 import Scene from '../components/background/Scene';
 import { useLenis } from '../hooks/useLenis';
 import data from '../data/data.json';
@@ -31,8 +32,11 @@ export default function Portfolio() {
       <main className="overflow-hidden relative z-10">
         <Hero onPlay={() => openLightbox(data.hero.showreelVideoTiktokUrl)} />
         <FeaturedWork onPlay={(url) => openLightbox(url)} />
-        <MoreWorks />
+        <SectionDivider />
+        <MoreWorks onPlay={(url) => openLightbox(url)} />
+        <SectionDivider />
         <About />
+        <SectionDivider accent />
         <Contact />
       </main>
       <TikTokLightbox

@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
+import data from '../../data/data.json';
 
 export function Footer() {
   const links = [
-    { label: 'Instagram', href: 'https://instagram.com/vokhoi' },
-    { label: 'Facebook', href: 'https://facebook.com/vokhoi' },
-    { label: 'Zalo', href: 'https://zalo.me/vokhoi' },
+    { label: 'Instagram', href: data.siteConfig.social.instagram },
+    { label: 'Facebook', href: data.siteConfig.social.facebook },
+    { label: 'Zalo', href: data.siteConfig.social.zalo },
   ];
 
   return (
@@ -36,7 +37,7 @@ export function Footer() {
               className="text-3xl tracking-[0.15em] font-bold uppercase mb-3 text-foreground"
               style={{ textShadow: '0 0 30px rgba(255,61,0,0.2)' }}
             >
-              Vo Khoi<span className="text-accent">.</span>
+              Vo Khoi<span className="text-accent ambient-pulse">.</span>
             </h3>
             <p className="text-muted-foreground font-mono text-sm max-w-xs leading-relaxed">
               Visual Storyteller & Cinematic Video Editor based in Vietnam.
