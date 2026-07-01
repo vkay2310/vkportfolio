@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { SectionHeading } from '../ui/SectionHeading';
 import { cn } from '../../lib/utils';
 import data from '../../data/data.json';
+import { useTikTokThumbnail } from '../../hooks/useTikTokThumbnail';
 
 interface Props {
   onPlay: (url: string) => void;
@@ -59,6 +60,7 @@ function MoreWorkCard({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const hasVideo = Boolean(project.tiktokUrl);
+  const thumbnail = useTikTokThumbnail(project.tiktokUrl, project.thumbnailUrl);
   const hasMeta = Boolean(project.duration || project.client);
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -86,14 +88,14 @@ function MoreWorkCard({
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.7, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
       className={cn(
-        'relative group overflow-hidden spotlight-card depth-2 light-wrap',
+        'relative group overflow-hidden spotlight-card depth-2 media-frame shine-sweep',
         large ? 'col-span-2 row-span-2 aspect-square sm:aspect-[4/3] lg:aspect-square' : 'aspect-square',
         hasVideo ? 'cursor-pointer' : 'cursor-default'
       )}
       style={{ background: 'var(--color-space-surface)' }}
     >
       <motion.img
-        src={project.thumbnailUrl}
+        src={thumbnail}
         alt={project.title}
         loading="lazy"
         decoding="async"

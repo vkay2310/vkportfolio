@@ -84,7 +84,7 @@ export function TikTokLightbox({ isOpen, videoUrl, onClose }: Props) {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.95, opacity: 0 }}
             transition={{ delay: 0.1, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full max-w-sm aspect-[9/16] bg-card overflow-hidden shadow-2xl border border-border depth-3"
+            className="relative w-full max-w-sm aspect-[9/16] bg-card overflow-hidden shadow-2xl border border-border depth-3 media-frame"
             onClick={(e) => e.stopPropagation()}
           >
             {hasVideo ? (

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { Flame } from 'lucide-react';
 import { TextReveal } from '../animations/TextReveal';
 import { Button } from '../ui/Button';
 import data from '../../data/data.json';
@@ -138,7 +139,7 @@ export function Hero({ onPlay }: Props) {
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative aspect-[4/5] md:aspect-square w-full overflow-hidden depth-3 light-wrap"
+          className="relative aspect-[4/5] md:aspect-square w-full overflow-hidden depth-3 media-frame"
           style={{ background: 'var(--color-space-surface)' }}
         >
           {/* Image — parallax driven by mouse */}
@@ -161,8 +162,23 @@ export function Hero({ onPlay }: Props) {
             className="absolute inset-0 pointer-events-none"
             style={{
               background: 'linear-gradient(to top, rgba(4,5,10,0.7) 0%, transparent 50%), linear-gradient(to right, rgba(4,5,10,0.3) 0%, transparent 40%)',
+              zIndex: 1,
             }}
           />
+
+          {/* "Most Viral" badge — social-proof hook, echoes the language
+              of the platform this footage actually lives on (TikTok) */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, y: -10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute top-5 left-5 z-20 flex items-center gap-1.5 pl-2.5 pr-3.5 py-1.5 rounded-full viral-badge"
+          >
+            <Flame size={14} className="text-white viral-flame" fill="currentColor" strokeWidth={0} />
+            <span className="font-sans text-[11px] font-bold tracking-[0.08em] uppercase text-white">
+              Most Viral
+            </span>
+          </motion.div>
 
           {/* Play button — elevated above image */}
           <div

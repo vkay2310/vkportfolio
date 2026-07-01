@@ -14,8 +14,8 @@
     }
   },
   "hero": {
-    "showreelVideoTiktokUrl": "https://www.tiktok.com/@snake.i.cafe.1.mn/video/7647145412603710738?is_from_webapp=1&sender_device=pc&web_id=7636075552265242132",
-    "coverImage": "/img/img1.jpg"
+    "showreelVideoTiktokUrl": "https://www.tiktok.com/@snake.i.cafe.1.mn/video/7638201918443064584?is_from_webapp=1&sender_device=pc&web_id=7636075552265242132",
+    "coverImage": "/img/img4.png"
   },
   "about": {
     "bio": "I am Vo Khoi — a visual storyteller based in Vietnam. I believe every brand has a story worth telling through cinematic visuals.",
@@ -27,13 +27,9 @@
       {
         "name": "CapCut",
         "role": ""
-      },
-      {
-        "name": "Premiere Pro",
-        "role": ""
       }
     ],
-    "portraitImage": "/img/img1.jpg"
+    "portraitImage": "/img/img3.jpg"
   },
   "projects": [
     {
@@ -52,8 +48,8 @@
       "title": "VT Solo Trip",
       "category": "Travel",
       "description": "A quiet escape to the coastal city.",
-      "thumbnailUrl": "/images/projects/vt-solo-trip.jpg",
-      "tiktokUrl": "",
+      "thumbnailUrl": "/img/img5.png",
+      "tiktokUrl": "https://www.tiktok.com/@snake.i.cafe.1.mn/video/7646039149442551048?is_from_webapp=1&sender_device=pc&web_id=7636075552265242132",
       "featured": true,
       "duration": "",
       "client": ""
@@ -63,9 +59,86 @@
       "title": "Đừng Làm Chi Nửa Vời",
       "category": "Commercial",
       "description": "Brand storytelling for a local business.",
-      "thumbnailUrl": "/images/projects/dung-lam-chi.jpg",
-      "tiktokUrl": "",
+      "thumbnailUrl": "/img/img6.jpg",
+      "tiktokUrl": "https://www.tiktok.com/@snake.i.cafe.1.mn/video/7639011748158180616?is_from_webapp=1&sender_device=pc&web_id=7636075552265242132",
       "featured": true,
+      "duration": "0:52",
+      "client": ""
+    },
+    {
+      "id": "1782882018322",
+      "title": "Breaking the loop — Refresh the soul.",
+      "category": "Cinematic x Vlog",
+      "description": "A cinematic intro and coffee vlog",
+      "thumbnailUrl": "",
+      "tiktokUrl": "https://www.tiktok.com/@snake.i.cafe.1.mn/video/7637448274651385106?is_from_webapp=1&sender_device=pc&web_id=7636075552265242132",
+      "featured": false,
+      "duration": "",
+      "client": ""
+    },
+    {
+      "id": "1782882196779",
+      "title": "Barista From Hogwarts School",
+      "category": "Visual video",
+      "description": "",
+      "thumbnailUrl": "",
+      "tiktokUrl": "https://www.tiktok.com/@snake.i.cafe.1.mn/video/7636384895782128903?is_from_webapp=1&sender_device=pc&web_id=7636075552265242132",
+      "featured": false,
+      "duration": "",
+      "client": ""
+    },
+    {
+      "id": "1782882197304",
+      "title": "Loser",
+      "category": "Commercial",
+      "description": "",
+      "thumbnailUrl": "",
+      "tiktokUrl": "https://www.tiktok.com/@snake.i.cafe.1.mn/video/7647145412603710738?is_from_webapp=1&sender_device=pc&web_id=7636075552265242132",
+      "featured": false,
+      "duration": "",
+      "client": ""
+    },
+    {
+      "id": "1782882197474",
+      "title": "The Art Of Making Coffee",
+      "category": "Cinematic x Vlog",
+      "description": "",
+      "thumbnailUrl": "",
+      "tiktokUrl": "https://www.tiktok.com/@snake.i.cafe.1.mn/video/7638601475953790216?is_from_webapp=1&sender_device=pc&web_id=7636075552265242132",
+      "featured": false,
+      "duration": "",
+      "client": ""
+    },
+    {
+      "id": "1782882197663",
+      "title": "Outdoor Handbrew",
+      "category": "Vlog",
+      "description": "",
+      "thumbnailUrl": "",
+      "tiktokUrl": "https://www.tiktok.com/@snake.i.cafe.1.mn/video/7637463557373791506?is_from_webapp=1&sender_device=pc&web_id=7636075552265242132",
+      "featured": false,
+      "duration": "",
+      "client": ""
+    },
+    {
+      "id": "1782882198050",
+      "title": "Nay Pha Cà Hén!",
+      "category": "Vlog",
+      "description": "",
+      "thumbnailUrl": "",
+      "tiktokUrl": "https://www.tiktok.com/@snake.i.cafe.1.mn/video/7637074827064380680?is_from_webapp=1&sender_device=pc&web_id=7636075552265242132",
+      "featured": false,
+      "duration": "",
+      "client": ""
+    },
+    {
+      "id": "1782882834603",
+      "title": "I Hope You Find...",
+      "category": "Short",
+      "description": "",
+      "thumbnailUrl": "",
+      "tiktokUrl": "https://www.tiktok.com/@snake.i.cafe.1.mn/video/7645708562093624594?is_from_webapp=1&sender_device=pc&web_id=7636075552265242132",
+      "featured": false,
       "duration": "",
       "client": ""
     }

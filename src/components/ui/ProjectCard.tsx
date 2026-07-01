@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '../../lib/utils';
-
+import { useTikTokThumbnail } from '../../hooks/useTikTokThumbnail';
 export interface ProjectCardProps {
   project: {
     id: string;
@@ -60,7 +60,7 @@ export function ProjectCard({ project, index, featured = false, onPlay }: Projec
     >
       {/* Featured visual */}
       <div className={cn(
-        'relative overflow-hidden w-full depth-2 light-wrap',
+        'relative overflow-hidden w-full depth-2 media-frame shine-sweep',
         featured ? 'md:w-3/5 aspect-video' : 'md:w-1/2 aspect-[4/3]',
       )}>
         {/* Image with parallax scale */}

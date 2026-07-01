@@ -41,17 +41,26 @@ export function About() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7 relative w-full aspect-[4/5] md:aspect-[3/4] overflow-hidden depth-3 light-wrap"
+            className="lg:col-span-7 relative w-full aspect-[4/5] md:aspect-[3/4] depth-3 media-frame"
             style={{ background: 'var(--color-space-surface)' }}
           >
-            <motion.img
-              src={data.about.portraitImage}
-              alt="Vo Khoi Portrait"
-              loading="lazy"
-              decoding="async"
-              className="absolute inset-[-12%] w-[124%] h-[124%] object-cover"
-              style={{ opacity: 0.88, filter: 'grayscale(15%)', y: portraitY }}
-            />
+            {/* Lớp khung — chỉ bo góc + cắt, KHÔNG BAO GIỜ transform */}
+            <div className="media-frame-inner">
+              {/* Lớp chuyển động — chỉ transform, KHÔNG bo góc, không biết gì về khung */}
+              <motion.div
+                className="absolute inset-[-12%] w-[124%] h-[124%]"
+                style={{ y: portraitY }}
+              >
+                <img
+                  src={data.about.portraitImage}
+                  alt="Vo Khoi Portrait"
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover"
+                  style={{ opacity: 0.88, filter: 'grayscale(15%)' }}
+                />
+              </motion.div>
+            </div>
             {/* Portrait depth gradient */}
             <div
               className="absolute inset-0 pointer-events-none"
