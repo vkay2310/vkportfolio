@@ -32,16 +32,18 @@ export function About() {
       <div className="container mx-auto px-6 md:px-12 relative z-10">
         <SectionHeading title="About" index={3} />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
 
-          {/* Portrait — hero-scale, the dominant visual of this section */}
+          {/* Portrait — smaller, framed accent rather than the full-bleed
+              dominant visual; capped width keeps it proportionate to the
+              text column on wide screens instead of stretching edge-to-edge. */}
           <motion.div
             ref={portraitWrapRef}
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7 relative w-full aspect-[4/5] md:aspect-[3/4] depth-3 media-frame"
+            className="lg:col-span-5 relative w-full max-w-sm sm:max-w-md lg:max-w-none mx-auto lg:mx-0 aspect-[4/5] depth-3 media-frame"
             style={{ background: 'var(--color-space-surface)' }}
           >
             {/* Lớp khung — chỉ bo góc + cắt, KHÔNG BAO GIỜ transform */}
@@ -85,7 +87,7 @@ export function About() {
           </motion.div>
 
           {/* Text */}
-          <div className="lg:col-span-5 flex flex-col gap-12 pt-4 lg:pt-8">
+          <div className="lg:col-span-7 flex flex-col gap-12 pt-4 lg:pt-0">
             <div className="flex flex-col gap-5">
               {bioParagraphs.map((para, i) => (
                 <motion.p

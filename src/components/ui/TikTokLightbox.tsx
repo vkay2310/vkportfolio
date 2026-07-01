@@ -21,10 +21,12 @@ function extractId(url: string | null): string | null {
 export function TikTokLightbox({ isOpen, videoUrl, onClose }: Props) {
   const [loading, setLoading] = useState(true);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const lenis = useLenisInstance();
 
   const videoId = extractId(videoUrl);
   const hasVideo = Boolean(videoId);
+
 
   // Lock/unlock the *real* scroll engine. Lenis hijacks native scrolling,
   // so toggling `body.style.overflow` alone leaves the page scrollable
@@ -103,6 +105,7 @@ export function TikTokLightbox({ isOpen, videoUrl, onClose }: Props) {
                 */}
                 <iframe
                   key={videoId}
+                  ref={iframeRef}
                   className={cn(
                     'w-full h-full border-0 absolute inset-0 transition-opacity duration-700',
                     loading ? 'opacity-0' : 'opacity-100'

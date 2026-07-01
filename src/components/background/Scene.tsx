@@ -353,9 +353,24 @@ export default function Scene() {
 
         rafRef.current = requestAnimationFrame(tick);
 
+        // ── Pause when the tab isn't visible ────────────────────
+        // Keeps the exact same animation when the tab IS visible;
+        // simply stops burning GPU/CPU cycles rendering a canvas
+        // nobody is looking at (background tabs, minimized window).
+        const onVisibilityChange = () => {
+            if (document.hidden) {
+                cancelAnimationFrame(rafRef.current);
+            } else {
+                lastTs = performance.now();
+                rafRef.current = requestAnimationFrame(tick);
+            }
+        };
+        document.addEventListener('visibilitychange', onVisibilityChange);
+
         return () => {
             window.removeEventListener('resize', resize);
             window.removeEventListener('mousemove', onMove);
+            document.removeEventListener('visibilitychange', onVisibilityChange);
             cancelAnimationFrame(rafRef.current);
         };
     }, []);
