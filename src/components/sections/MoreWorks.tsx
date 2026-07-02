@@ -4,6 +4,7 @@ import { SectionHeading } from '../ui/SectionHeading';
 import { cn } from '../../lib/utils';
 import data from '../../data/data.json';
 import { useTikTokThumbnail } from '../../hooks/useTikTokThumbnail';
+import { usePerfTier } from '../../hooks/usePerfTier';
 
 interface Props {
   onPlay: (url: string) => void;
@@ -11,12 +12,17 @@ interface Props {
 
 export function MoreWorks({ onPlay }: Props) {
   const moreProjects = data.projects.filter((p) => !p.featured);
+  const isLite = usePerfTier() === 'lite';
   if (moreProjects.length === 0) return null;
 
   return (
     <section
       className="py-24 relative"
-      style={{ background: 'rgba(6,7,12,0.6)', backdropFilter: 'blur(2px)' }}
+      style={
+        isLite
+          ? { background: 'rgba(6,7,12,0.86)' }
+          : { background: 'rgba(6,7,12,0.6)', backdropFilter: 'blur(2px)' }
+      }
     >
       {/* Section ambient glow */}
       <div

@@ -7,6 +7,7 @@ import { MoreWorks } from '../components/sections/MoreWorks';
 import { About } from '../components/sections/About';
 import { Contact } from '../components/sections/Contact';
 import { TikTokLightbox } from '../components/ui/TikTokLightbox';
+import { IntroLoader } from '../components/ui/IntroLoader';
 import { Marquee } from '../components/ui/Marquee';
 import { SectionDivider } from '../components/animations/SectionDivider';
 import Scene from '../components/background/Scene';
@@ -26,6 +27,8 @@ export default function Portfolio() {
 
   return (
     <>
+      <IntroLoader />
+
       {/* Living environment — renders behind everything */}
       <Scene />
 

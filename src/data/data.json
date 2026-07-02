@@ -15,7 +15,7 @@
   },
   "hero": {
     "showreelVideoTiktokUrl": "https://www.tiktok.com/@snake.i.cafe.1.mn/video/7638201918443064584?is_from_webapp=1&sender_device=pc&web_id=7636075552265242132",
-    "coverImage": "/img/img4.png"
+    "coverImage": "/img/img4.webp"
   },
   "about": {
     "bio": "I am Vo Khoi — a visual storyteller based in Vietnam. I believe every brand has a story worth telling through cinematic visuals.",
@@ -48,7 +48,7 @@
       "title": "VT Solo Trip",
       "category": "Travel",
       "description": "A quiet escape to the coastal city.",
-      "thumbnailUrl": "/img/img5.png",
+      "thumbnailUrl": "/img/img5.webp",
       "tiktokUrl": "https://www.tiktok.com/@snake.i.cafe.1.mn/video/7646039149442551048?is_from_webapp=1&sender_device=pc&web_id=7636075552265242132",
       "featured": true,
       "duration": "",

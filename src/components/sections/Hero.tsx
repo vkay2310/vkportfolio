@@ -28,6 +28,8 @@ export function Hero({ onPlay }: Props) {
       ty = ((e.clientY - rect.top) / rect.height) * 100;
     };
 
+    const LIGHT_HALF = 300; // half of the 600px glow below — keep in sync
+
     const tick = () => {
       lx = lerp(lx, tx, 0.06);
       ly = lerp(ly, ty, 0.06);
@@ -38,10 +40,14 @@ export function Hero({ onPlay }: Props) {
         const dy = (ly - 50) * 0.015;
         imageRef.current.style.transform = `translate(${dx}%, ${dy}%) scale(1.04)`;
       }
-      // Light shifts on mouse position
-      if (lightRef.current) {
-        lightRef.current.style.setProperty('--hero-lx', `${lx}%`);
-        lightRef.current.style.setProperty('--hero-ly', `${ly}%`);
+      // Light follows the cursor via transform (compositor-only) instead of
+      // rewriting a radial-gradient's center every frame — same technique
+      // as the global env-mouse-light, scoped to this section.
+      if (lightRef.current && heroRef.current) {
+        const rect = heroRef.current.getBoundingClientRect();
+        const px = (lx / 100) * rect.width;
+        const py = (ly / 100) * rect.height;
+        lightRef.current.style.transform = `translate3d(${px - LIGHT_HALF}px, ${py - LIGHT_HALF}px, 0)`;
       }
       animFrame = requestAnimationFrame(tick);
     };
@@ -62,15 +68,19 @@ export function Hero({ onPlay }: Props) {
       id="hero"
       className="relative min-h-screen flex items-center pt-32 pb-16 overflow-hidden"
     >
-      {/* Hero local light — reacts to mouse */}
-      <div
-        ref={lightRef}
-        className="absolute inset-0 pointer-events-none z-0"
-        style={{
-          background: `radial-gradient(circle 600px at var(--hero-lx, 50%) var(--hero-ly, 50%), rgba(255,61,0,0.06) 0%, transparent 70%)`,
-          transition: 'background 0.2s ease',
-        }}
-      />
+      {/* Hero local light — reacts to mouse, clipped to this section */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        <div
+          ref={lightRef}
+          className="absolute top-0 left-0 will-change-transform"
+          style={{
+            width: 600,
+            height: 600,
+            background: 'radial-gradient(circle, rgba(255,61,0,0.06) 0%, transparent 70%)',
+            transform: 'translate3d(-300px, -300px, 0)',
+          }}
+        />
+      </div>
 
       <div className="container mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
 

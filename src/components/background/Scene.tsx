@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { usePerfTier } from '../../hooks/usePerfTier';
 
 /**
  * ENVIRONMENT — PHASE 1 (v2: glow mạnh hơn + sao chổi)
@@ -145,7 +146,19 @@ function buildLayer(config: LayerConfig, seedOffset: number): Star[] {
     return stars;
 }
 
-const STAR_LAYERS = LAYERS.map((cfg, i) => ({ cfg, stars: buildLayer(cfg, i * 977) }));
+// Lite variant — same look, fewer stars + smaller halos, for touch/low-end
+// devices where GPU fill-rate (not CPU) is the actual bottleneck.
+const LAYERS_LITE: LayerConfig[] = LAYERS.map((cfg) => ({
+  ...cfg,
+  count: Math.round(cfg.count * 0.45),
+  blur: Math.round(cfg.blur * 0.6),
+}));
+
+// Built lazily (inside the component, once) instead of at module load —
+// so a "lite" device never pays to bake sprites for the "full" star count.
+function buildStarLayers(tierLayers: LayerConfig[]) {
+  return tierLayers.map((cfg, i) => ({ cfg, stars: buildLayer(cfg, i * 977) }));
+}
 
 // ── Dust (CSS-only, không thay đổi) ──────────────────────────
 const DUST = Array.from({ length: 30 }, (_, i) => ({   // giảm từ 40 → 30
@@ -192,7 +205,10 @@ function colorFor(hue: Star['hue'], alpha: number) {
 
 export default function Scene() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const lightRef = useRef<HTMLDivElement>(null);
     const rafRef = useRef<number>(0);
+    const tier = usePerfTier();
+    const isLite = tier === 'lite';
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -202,11 +218,16 @@ export default function Scene() {
 
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+        // Sao được build ở đây (không phải module scope) — máy "lite" không
+        // bao giờ tốn công bake sprite cho số lượng sao của bản "full".
+        const STAR_LAYERS = buildStarLayers(isLite ? LAYERS_LITE : LAYERS);
+        const MAX_COMETS = isLite ? 0 : 2;
+
         let width = window.innerWidth;
         let height = window.innerHeight;
 
-        // Cap DPR ở 1.5 thay vì 2 → giảm ~44% pixel fill trên màn retina/HiDPI
-        const DPR = Math.min(window.devicePixelRatio || 1, 1.5);
+        // DPR: 1 trên máy lite (giảm ~55% pixel fill so với 1.5), 1.5 trên máy full.
+        const DPR = isLite ? 1 : Math.min(window.devicePixelRatio || 1, 1.5);
 
         const resize = () => {
             width = window.innerWidth;
@@ -237,15 +258,22 @@ export default function Scene() {
         const start = performance.now();
         let lastTs = start;
 
-        // ── CSS var — chỉ update khi thay đổi đáng kể ─────────
-        let prevCssX = -1, prevCssY = -1;
-        const updateCSSVars = (cx: number, cy: number) => {
-            const nx = Math.round(cx * 10000) / 100;   // 2 decimal %
-            const ny = Math.round(cy * 10000) / 100;
-            if (Math.abs(nx - prevCssX) > 0.05 || Math.abs(ny - prevCssY) > 0.05) {
-                document.documentElement.style.setProperty('--mouse-x', `${nx}%`);
-                document.documentElement.style.setProperty('--mouse-y', `${ny}%`);
-                prevCssX = nx; prevCssY = ny;
+        // ── Mouse light — moved via transform, NOT a repainted gradient ──
+        // Rewriting a radial-gradient's center position (the old approach,
+        // via a `--mouse-x/--mouse-y` CSS var) forces the browser to repaint
+        // a full-viewport layer on every update — up to 60x/sec. A fixed-size
+        // glow element that's *translated* instead costs the compositor
+        // almost nothing (GPU just re-uses the already-rasterized layer).
+        const LIGHT_HALF = 700; // matches --frame-radius in CSS below
+        let prevLx = -9999, prevLy = -9999;
+        const updateMouseLight = (cx: number, cy: number) => {
+            const lx = cx * width;
+            const ly = cy * height;
+            if (Math.abs(lx - prevLx) > 1 || Math.abs(ly - prevLy) > 1) {
+                if (lightRef.current) {
+                    lightRef.current.style.transform = `translate3d(${lx - LIGHT_HALF}px, ${ly - LIGHT_HALF}px, 0)`;
+                }
+                prevLx = lx; prevLy = ly;
             }
         };
 
@@ -276,10 +304,10 @@ export default function Scene() {
 
         // ── drawComets ─────────────────────────────────────────
         const drawComets = (dt: number) => {
-            if (prefersReducedMotion) return;
+            if (prefersReducedMotion || MAX_COMETS === 0) return;
 
             cometTimer += dt;
-            if (cometTimer >= nextCometIn && comets.length < 2) {  // tối đa 2 comet
+            if (cometTimer >= nextCometIn && comets.length < MAX_COMETS) {
                 comets.push(spawnComet(width));
                 cometTimer = 0;
                 nextCometIn = 5 + Math.random() * 8;
@@ -336,7 +364,7 @@ export default function Scene() {
 
             curX += (targetX - curX) * 0.035;
             curY += (targetY - curY) * 0.035;
-            updateCSSVars(curX, curY);
+            if (!isLite) updateMouseLight(curX, curY);
 
             const offsetX = (curX - 0.5) * 2;
             const offsetY = (curY - 0.5) * 2;
@@ -373,16 +401,17 @@ export default function Scene() {
             document.removeEventListener('visibilitychange', onVisibilityChange);
             cancelAnimationFrame(rafRef.current);
         };
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isLite]);
 
     return (
         <div className="env-canvas" aria-hidden="true">
             <div className="env-sky" />
             <canvas ref={canvasRef} className="env-stars" />
             <div className="env-fog" />
-            <div className="env-light-beams" />
+            {!isLite && <div className="env-light-beams" />}
             <div className="env-dust">
-                {DUST.map((p) => (
+                {(isLite ? DUST.slice(0, 12) : DUST).map((p) => (
                     <span
                         key={p.id}
                         className="dust-particle"
@@ -398,7 +427,7 @@ export default function Scene() {
                     />
                 ))}
             </div>
-            <div className="env-mouse-light" />
+            {!isLite && <div ref={lightRef} className="env-mouse-light" />}
             <div className="env-noise" />
             <div className="env-vignette" />
         </div>

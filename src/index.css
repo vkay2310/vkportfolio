@@ -249,14 +249,19 @@
   pointer-events: none;
 }
 
+/* Fixed-size glow, MOVED via transform (set directly in Scene.tsx's rAF
+   loop) instead of having its gradient center re-painted every frame.
+   1400px = 2 × LIGHT_HALF in Scene.tsx — keep these in sync. */
 .env-mouse-light {
   position: absolute;
-  inset: 0;
-  background: radial-gradient(circle 700px at var(--mouse-x, 50%) var(--mouse-y, 30%),
-      rgba(255, 61, 0, 0.055) 0%,
-      transparent 70%);
+  top: 0;
+  left: 0;
+  width: 1400px;
+  height: 1400px;
+  background: radial-gradient(circle, rgba(255, 61, 0, 0.055) 0%, transparent 70%);
   pointer-events: none;
-  transition: none;
+  will-change: transform;
+  transform: translate3d(-700px, -700px, 0);
 }
 
 /* ─── DEPTH SYSTEM ──────────────────────────────────────── */
@@ -472,6 +477,22 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ─── PERF LITE — set on <html> by App.tsx for touch/low-end devices ───
+   backdrop-filter is the single most expensive effect on this site (it
+   forces a continuous re-blur of everything behind it). Swap it for a
+   solid panel — same "dark glass" read, none of the live-blur cost. */
+.perf-lite .glass {
+  background: rgba(6, 7, 12, 0.92);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.perf-lite .glass-light {
+  background: rgba(10, 11, 18, 0.85);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .text-shadow-depth {
